@@ -1,0 +1,600 @@
+<?php
+$api = [
+    'key' => '8308',
+    'secret' => '13462677b627b9046ddeca3eae6ecdc4',
+    'flow_url' => 'https://leadrock.com/URL-63390-F384A'
+];
+
+function send_the_order($post, $api)
+{
+    $params = [
+        'flow_url' => $api['flow_url'],
+        'user_phone' => $post['phone'],
+        'user_name' => $post['name'],
+        'other' => $post['other'],
+        'ip' => $_SERVER['REMOTE_ADDR'],
+        'ua' => $_SERVER['HTTP_USER_AGENT'],
+        'api_key' => $api['key'],
+        'sub1' => $post['sub1'],
+        'sub2' => $post['sub2'],
+        'sub3' => $post['sub3'],
+        'sub4' => $post['sub4'],
+        'sub5' => $post['sub5'],
+        'ajax' => 1,
+    ];
+    $url = 'https://leadrock.com/api/v2/lead/save';
+
+    $trackUrl = $params['flow_url'] . (strpos($params['flow_url'], '?') === false ? '?' : '&') . http_build_query($params);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $trackUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+    $params['track_id'] = curl_exec($ch);
+
+    $params['sign'] = sha1(http_build_query($params) . $api['secret']);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+    curl_exec($ch);
+    curl_close($ch);
+
+    header('Location: ' . (empty($post['success_page']) ? 'confirm.php' : $post['success_page']));
+}
+
+if (!empty($_POST['phone'])) {
+    send_the_order($_REQUEST, $api);
+}
+
+if (!empty($_GET)) {
+?>
+    <script type="text/javascript">
+        window.onload = function() {
+            let forms = document.getElementsByTagName("form");
+            for(let i=0; i<form action="index.php" s.length; i++) {
+                let form = forms[i];
+                form.setAttribute('action', form.getAttribute('action') + "?<?php echo http_build_query($_GET)?>");
+                form.setAttribute('method', 'post');
+            }
+        };
+    </script>
+<?php
+}
+
+?>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Smile - new product</title>
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+	<link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+<section class="page-wrap">
+    <section class="main content">
+        <div class="main__left">
+            <div class="main__text">
+                <h1 class="main__title">
+                    <img src="images/1.png">
+                    <small>Un sorriso impeccabile per te!</small>
+                </h1>
+
+                <ul class="list">
+                    <li>
+                        Ultra-fine, solide ed eleganti
+                    </li>
+
+                    <li>
+                        Fissaggio affidabile
+                    </li>
+
+                    <li>
+                        Dimensione uniforme
+                    </li>
+
+                </ul>
+
+            </div><!--main__text-->
+
+            <div class="banner">
+                <span class="banner__title">
+                    Offerta! <br>
+                    solo <br>
+                    1 giorno
+                </span>
+
+            </div><!--banner-->
+
+        </div><!--main__left-->
+
+        <form action="index.php" method="post" class="form">
+            <div class="discount">
+                <div class="discount__left">
+                    <span class="discount__percent">-53%</span>
+                    <p class="discount__price-old">105 €</p>
+                </div><!--discount__left-->
+
+                <div class="discount__right">
+                    <p class="discount__title">
+                        Prezzo di oggi:
+                    </p>
+
+                    <p class="discount__price">49 €</p>
+
+                </div><!--discount__right-->
+
+            </div><!--discount-->
+
+            <label class="form__label">
+                <span class="form__label-title">Per esempio: Andrea Forte</span>
+                <input type="text" name="name" class="form__field" placeholder="Inserisci il tuo nome" required>
+            </label>
+
+            <label class="form__label">
+                <span class="form__label-title">Per esempio: +397775658799</span>
+                <input type="text" name="phone" class="form__field" placeholder="Inserisci il tuo telefono" required>
+            </label>
+
+            <button class="yellow-btn form__order">Effettuare l'ordine</button>
+
+            <p class="form__count">
+                Rimangono i pezzi d'offerta:
+                <span class="form__count-length">22</span>
+            </p>
+<input type="hidden" name="sub1" value="{subid}">
+        </form>
+
+    </section><!--main-->
+
+    <section class="include content">
+        <h2>
+            <img src="images/2.png">
+        </h2>
+
+        <div class="include__list">
+            <div class="include__item">
+                <img src="images/include/item-1.jpg" alt="Photo">
+
+                <p class="include__item-desc">
+					Mascherano 1 o più denti<br>
+					mancanti e i denti rotti
+
+                </p>
+
+            </div><!--include__item-->
+
+            <div class="include__item">
+                <img src="images/include/item-2.jpg" alt="Photo">
+
+                <p class="include__item-desc">
+               Aiutano a nascondere i denti difformi e i spazi irregolari tra i denti
+                </p>
+
+            </div><!--include__item-->
+
+            <div class="include__item">
+                <img src="images/include/item-3.jpg" alt="Photo">
+
+                <p class="include__item-desc">
+                  Correggono la commessura dei denti e allineano i denti
+                </p>
+
+            </div><!--include__item-->
+
+            <div class="include__item">
+                <img src="images/include/item-4.jpg" alt="Photo">
+
+                <p class="include__item-desc">
+                    Aiutano a nascondere i denti oscuri
+                </p>
+
+            </div><!--include__item-->
+
+        </div><!--include__list-->
+
+    </section><!--include-->
+
+    <section class="troubles content">
+        <h2>
+			Lascia questi problemi <b>  <strong>per sempre!</strong>
+        </h2>
+
+        <div class="troubles__list">
+            <div class="trouble">
+                <div class="trouble__photo">
+                    <img src="images/troubles/item-1.jpg" alt="Photo">
+                </div><!--trouble__photo-->
+
+                <p class="trouble__desc">
+                   I denti danneggiati, mancanti e malpari non ci piacciono e ci fanno sentire soli. Ecco perché non vogliamo sorridere per non mostrare i nostri denti.
+                </p>
+
+            </div><!--trouble-->
+
+            <div class="trouble">
+                <div class="trouble__product">
+                    <img src="images/troubles/item-2.jpg" alt="Photo">
+                </div><!--trouble__photo-->
+
+                <p class="trouble__desc">
+                    <strong><img src="images/3.png" style="position:relative; bottom:-5px;"> è una una cosa speciale e unica che renderà il tuo sorriso impeccabile.</strong> Con loro ti vanterai dei tuoi denti e potrai sorridere sempre e ovunque.
+                </p>
+
+            </div><!--trouble-->
+
+        </div><!--troubles__list-->
+
+        <div class="after">
+            <p class="after__desc">
+                <strong>Tutti noteranno il tuo bel sorriso!</strong>
+            </p>
+
+            <div class="after__photos">
+                <img src="images/troubles/after-1.jpg" alt="Photo">
+                <img src="images/troubles/after-2.jpg" alt="Photo">
+                <img src="images/troubles/after-3.jpg" alt="Photo">
+            </div><!--after__photos-->
+
+        </div><!--after-->
+
+        <a href="#" class="yellow-btn js-scroll-link troubles__order" data-href=".main_bottom">Effettuare l'ordine</a>
+
+    </section><!--troubles-->
+
+    <section class="about content">
+        <div class="about__block">
+            <h2>
+                Cosa sono <img src="images/4.png" style="position:relative; bottom:-5px;">?</strong>
+            </h2>
+
+            <div class="about__photo">
+              <img src="images/about/item-1.jpg" alt="Photo">
+            </div><!--about__photo-->
+
+            <p class="about__desc">
+                <img src="images/5.png" style="position:relative; bottom:-5px;"> sono le eleganti, rimovibili e sicure. Si adattano a tutti e sono facili da usare. La sua struttura a ponte si basa sui denti naturali senza danneggiarli.
+            </p>
+
+            <p class="about__desc">
+                Sono realizzate in materiale fino e resistente, non sensibile a tè, caffè o fumo. Si può indossare <img src="images/6.png" style="position:relative; bottom:-5px;"> per un lungo periodo di tempo (per anni!) e per un periodo più breve, grazie a la sua struttura leggera e comoda, per rimpiazzare i denti durante il periodo di protesi permanente.
+            </p>
+
+            <p class="about__desc">
+                Questo sistema di aligner e <img src="images/6.png" style="position:relative; bottom:-5px;"> è facile da usare, c’è tutto il necessario nel kit. Durante la prima applicazione si adattano a la forma dei denti, e poi si fissano solidamente tra i denti. Sono così comode che entro 10 minuti, smetti di notarle.
+            </p>
+
+            <p class="about__desc">
+               Nessuno mai indovinerà che non sono i tuoi bei denti naturali ma le <img src="images/6.png" style="position:relative; bottom:-5px;">. 
+            </p>
+
+           <div class="about__photo">
+                <img src="images/about/item-2.jpg" alt="Photo"> 
+            </div><!--about__photo-->
+
+        </div><!--about__block-->
+
+    </section><!--about-->
+
+    <section class="text-block content">
+        <h2>
+           Come vengono prodotte <img src="images/4.png" style="position:relative; bottom:-5px;"><strong>?</strong>
+        </h2>
+
+        <p class="text-block__desc">
+            <img src="images/5.png" style="position:relative; bottom:-5px;"> è un prodotto brevettato della società americana Align Technology, che esiste dal 1997.
+        </p>
+
+        <p class="text-block__desc">
+            Questo sistema è l'unico al mondo che si fa in una fabbrica con l´uso delle tecnologie innovative ed attrezzature high-tech. La maggior parte di altre <img src="images/6.png" style="position:relative; bottom:-5px;"> si fanno in condizioni di un laboratorio odontotecnico standard con metodi artigianali.
+        </p>
+
+        <p class="text-block__desc">
+            Grazie all'utilizzo di materiali unici e alla produzione tecnologica<strong> aligner e</strong><img src="images/6.png" style="position:relative; bottom:-5px;"> non solo sono eleganti e piacevoli da indossare, ma sono anche così efficaci come il sistema di apparecchio ortodontico. 
+        </p>
+
+    </section><!--text-block-->
+
+    <section class="about about_sec content">
+        <div class="about__block">
+            <h2>
+                <img src="images/7.png" style="position:relative; bottom:-5px;"> è creato
+                <strong>specialmente per te</strong>
+            </h2>
+
+            <div class="about__photo">
+                <img src="images/about/item-3.jpg" alt="Photo">
+            </div><!--about__photo-->
+
+            <p class="about__desc">
+                <img src="images/5.png" style="position:relative; bottom:-5px;"> sono rimovibili leggere e comode che si adattano a tutti. Sono così confortevoli che entro 10 minuti, smetti di notarle. Nessuno mai indovinerà che non sono i tuoi bei denti naturali ma le <img src="images/6.png" style="position:relative; bottom:-5px;">.
+            </p>
+
+            <p class="about__desc">
+                <img src="images/5.png" style="position:relative; bottom:-5px;"> non hai bisogno di limare i denti, non fanno male allo smalto e le gengive. Sono prodotte in polipropilene medicale ultrafino e resistente. È un materiale molto solido che non perde la sua bellezza e la sua resistenza per anni.
+            </p>
+
+            <ul class="list">
+                <li> Si fissano senza dolore e senza limare i denti</li>
+				<li> Materiale e fissatore ipoallergenici</li>
+				<li> I denti dritti e bianchi</li>
+				<li> Fissagio affidabile 24/7</li>
+				<li> Dimensione uniforme</li>
+            </ul>
+
+            <a href="#" class="yellow-btn js-scroll-link about__order" data-href=".main_bottom">Effettuare l'ordine</a>
+
+        </div><!--about__block-->
+
+    </section><!--about-->
+
+    <section class="steps content">
+        <h2>
+            <img src="images/7.png" style="position:relative; bottom:-5px;"> <em>sono facili da usare!</em>
+        </h2>
+
+        <p class="steps__desc">
+          3 semplici passi e il tuo sorriso diventerà impeccabile!
+        </p>
+
+        <div class="steps__list">
+            <div class="step">
+                <img src="images/steps/step-1.jpg" alt="Photo">
+                <span class="step__number">1</span>
+                <p class="step__desc">
+                    Metti le <img src="images/6.png" style="position:relative; bottom:-5px;"> in acqua calda per 2 minuti
+                </p>
+
+            </div><!--step-->
+
+            <div class="step">
+                <img src="images/steps/step-2.jpg" alt="Photo">
+                <span class="step__number">2</span>
+                <p class="step__desc">
+                   Premi solidamente verso i denti
+                </p>
+
+            </div><!--step-->
+
+            <div class="step">
+                <img src="images/steps/step-3.jpg" alt="Photo">
+                <span class="step__number">3</span>
+                <p class="step__desc">
+                   Sorridi il più spesso possibile, perché il tuo bel sorriso piacerà a tutti!
+                </p>
+
+            </div><!--step-->
+
+        </div><!--steps__list-->
+
+    </section><!--steps-->
+
+    <section class="reviews">
+        <div class="content">
+            <div class="reviews__block">
+                <h2>
+				Commenti dei nostri <em> clienti</em>
+                </h2>
+
+                <div class="reviews__slider">
+                    <div class="reviews__slides owl-carousel">
+                        <div class="review">
+                            <img src="images/reviews/review-1.jpg" alt="Photo">
+                            <p class="review__user">
+                                Ricardo, 26 anni
+                            </p>
+
+                            <p class="review__desc">
+                               I miei denti erano gialli e curvi, cosa che non piaceva a mia moglie. Poi mi ha consigliato le <img src="images/6.png" style="display: inline; height: 21px; width: 70px; position:relative; bottom:-5px;">, perché le ha comprate e le ha prese. Quindi ha ordinato un altro paio per me. Francamente, non volevo indossarle. Ma poi, dopo provarle, sono rimasto sorpreso. Sono molto comode, si fissano saldamente e i denti sembrano irresistibili. Ora indosso queste <img src="images/6.png" style="display: inline; height: 21px; width: 70px; position:relative; bottom:-5px;"> per qualsiasi evento ufficiale.
+                            </p>
+
+                        </div><!--review-->
+
+                        <div class="review">
+                            <img src="images/reviews/review-2.jpg" alt="Photo">
+                            <p class="review__user">
+                                Maria, 33 anni
+                            </p>
+
+                            <p class="review__desc">
+                               Ho un spazio grande tra i denti anteriori, non è molto bello, ho sempre voluto nasconderlo. Dopo guardare la pubblicità ho ordinato queste <img src="images/6.png" style="display: inline; height: 21px; width: 70px; position:relative; bottom:-5px;">, ora il mio sogno viene realizzato! I miei denti sono perfetti, sembrano naturali e molto belli! Sono dritti e bianchi, come sognavo! Acquistate, non ve ne penterete!
+                            </p>
+
+                        </div><!--review-->
+
+                        <div class="review">
+                            <img src="images/reviews/review-3.jpg" alt="Photo">
+                            <p class="review__user">
+                                Lorenzo Neri, 36 anni
+                            </p>
+
+                            <p class="review__desc">
+                                Ho ordinato <img src="images/6.png" style="display: inline; height: 21px; width: 70px; position:relative; bottom:-5px;">, è un prodotto molto popolare. I miei propri denti non sono perfetti. Ho deciso di provare le <img src="images/6.png" style="display: inline; height: 21px; width: 70px; position:relative; bottom:-5px;">. Beh... hanno superato le mie aspettative! Ora posso sorridere senza vergognare dei miei denti. Sono come i denti naturali, è fantastico! Consiglio a tutti coloro che hanno i denti danneggiati o storti!
+                            </p>
+
+                        </div><!--review-->
+
+                    </div><!--reviews__slides-->
+
+                    <span class="reviews__slider-prev"></span>
+                    <span class="reviews__slider-next"></span>
+
+                </div><!--reviews__slider-->
+
+                <a href="#" class="yellow-btn js-scroll-link reviews__order" data-href=".main_bottom">Effettuare l'ordine</a>
+
+            </div><!--reviews__block-->
+
+        </div><!--content-->
+
+    </section><!--reviews-->
+
+    <section class="how content">
+        <h2>
+            Come ordinare le <img src="images/4.png" style="position:relative; bottom:-5px;">?
+        </h2>
+
+        <div class="how__list">
+            <div class="how__item">
+                <span class="how__item-icon">
+                    <i class="icon icon-how-1 pos-center"></i>
+                    <span class="how__item-number">01</span>
+                </span>
+
+                <p class="how__item-title">
+                    Richiesta
+                </p>
+
+                <p class="how__item-desc">
+                    Lascia una richiesta<br> sul nostro sito
+                </p>
+
+            </div><!--how__item-->
+
+            <div class="how__item">
+                <span class="how__item-icon">
+                    <i class="icon icon-how-2 pos-center"></i>
+                    <span class="how__item-number">02</span>
+                </span>
+
+                <p class="how__item-title">
+                    Chiamata
+                </p>
+
+                <p class="how__item-desc">
+                   Attendi la nostra chiamata<br> per effetuare l'ordine
+                </p>
+
+            </div><!--how__item-->
+
+            <div class="how__item">
+                <span class="how__item-icon">
+                    <i class="icon icon-how-3 pos-center"></i>
+                    <span class="how__item-number">03</span>
+                </span>
+
+                <p class="how__item-title">
+                    Consegna
+                </p>
+
+                <p class="how__item-desc">
+                   Consegnaremo l'ordine<br> ento 1-3 giorni al massimo
+                </p>
+
+            </div><!--how__item-->
+
+            <div class="how__item">
+                <span class="how__item-icon">
+                    <i class="icon icon-how-4 pos-center"></i>
+                    <span class="how__item-number">04</span>
+                </span>
+
+                <p class="how__item-title">
+                    Ricezione
+                </p>
+
+                <p class="how__item-desc">
+                    Si paga <br> al ricevimento
+                </p>
+
+            </div><!--how__item-->
+
+        </div><!--how__list-->
+
+    </section><!--how-->
+
+    <section class="main main_bottom content">
+        <div class="main__left">
+            <div class="main__text">
+                <h1 class="main__title">
+                    <img src="images/1.png">
+                    <small>Un sorriso impeccabile per te!</small>
+                </h1>
+
+                <ul class="list">
+                	<li> Ultra-fine, solide ed eleganti</li>
+					<li> Fissaggio affidabile</li>
+					<li> Dimensione uniforme</li>					
+                </ul>
+
+            </div><!--main__text-->
+
+            <div class="banner">
+                <span class="banner__title">
+                    Offerta! <br>
+                    solo <br>
+                    1 giorno
+                </span>
+
+            </div><!--banner-->
+
+        </div><!--main__left-->
+
+        <form  action="index.php"  class="form" method="post">
+            <div class="discount">
+                <div class="discount__left">
+                    <span class="discount__percent">-53%</span>
+                    <p class="discount__price-old">105 €</p>
+                </div><!--discount__left-->
+
+                <div class="discount__right">
+                    <p class="discount__title">
+                        Prezzo di oggi:
+                    </p>
+
+                    <p class="discount__price">49 €</p>
+
+                </div><!--discount__right-->
+
+            </div><!--discount-->
+
+            <label class="form__label">
+                <span class="form__label-title">Per esempio: Andrea Forte</span>
+                <input type="text" name="name" class="form__field" placeholder="Inserisci il tuo nome" required>
+            </label>
+
+            <label class="form__label">
+                <span class="form__label-title">Per esempio: +397775658799</span>
+                <input type="text" name="phone" class="form__field" placeholder="Inserisci il tuo telefono" required>
+            </label>
+
+            <button class="yellow-btn form__order">Effettuare l'ordine</button>
+
+            <p class="form__count">
+                Rimangono i pezzi d'offerta:
+                <span class="form__count-length">22</span>
+            </p>
+<input type="hidden" name="sub1" value="{subid}">
+        </form>
+
+    </section><!--main-->
+
+    <footer class="footer content">
+        <p class="footer__address">
+            ST. GЕRАRDЕ LTD, РО Bоx 832, Оriоn Mаll, <br>
+            Раlm Strееt, Viсtоriа, Mаhé, Sеyсhеllеs
+        </p>
+
+        <div class="footer__links">
+             <a href="policy.html">Informativa sulla Privacy</a>
+        </div><!--footer__links-->
+
+    </footer>
+
+</section><!--page-wrap-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+</html>

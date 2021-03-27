@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Smile new product</title>
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+		<link rel="shortcut icon" href="images/icon.png" type="image/png">
+</head>
+<style>
+h2, h3, p {
+margin: 15px 0;
+}
+h2, h3 {
+font-weight: bold;
+}
+</style>
+<body>
+  
+
+  
+  <img height="1" width="1" src="https://www.facebook.com/tr?id=908940029665458&ev=Lead&noscript=1"/>
+  
+<section class="page-wrap">
+    <section class="troubles content">
+<br><br>
+<center><h2>
+       <span>
+        Grazie!
+       </span>
+       Il tuo ordine è stato accettato!
+      </h2><br><br>
+      <p>
+      <h3> Un nostro operatore ti contatterà per confermare l`ordine. </h3>
+       <br/>
+       <h3>La consegna sarà effettuata da un servizio di corriere. Il pagamento - alla consegna!</h3>
+      </p> </center>
+</section>
+    <footer class="footer content">
+        <p class="footer__address">
+            ST. GЕRАRDЕ LTD, РО Bоx 832, Оriоn Mаll, <br>
+            Раlm Strееt, Viсtоriа, Mаhé, Sеyсhеllеs
+        </p>
+
+        <div class="footer__links">
+           <a href="policy.html">Privacy Policy</a>
+            <i>|</i>
+            <a href="terms.html">Terms & Conditions</a>
+        </div><!--footer__links-->
+
+    </footer>
+
+</section><!--page-wrap-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+</html>
